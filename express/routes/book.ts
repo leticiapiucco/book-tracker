@@ -3,6 +3,20 @@ import { Book } from "../models/book"
 
 export const bookRouter = express.Router();
 
+bookRouter.post('/search', (req, res) => {
+    const searchQuery = req.query.q;
+    if (!searchQuery){
+      return res.status(400).json({message:"S"});
+    }
+    return res.json({message: getConvertedSearch()})
+})
+
+
+function getConvertedSearch() {
+	return fet ch('https://openlibrary.org/search.json?q=the+lord+of+the+rings', {method: 'GET',})
+  .then((response) => {return response.json()})
+}
+
 /**
 
 // CRUD routes for User model
