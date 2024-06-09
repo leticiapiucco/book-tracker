@@ -3,6 +3,8 @@ import bodyParser from 'body-parser'
 import { db } from "./db"
 import { bookRouter } from './routes/book'
 import { signupRouter } from './routes/signup'
+import { loginRouter } from './routes/login'
+import { logoutRouter } from './routes/logout'
 
 export const app = express();
 const port = 3000;
@@ -10,7 +12,7 @@ const port = 3000;
 // Middleware for parsing request body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
-app.use(bookRouter,signupRouter)
+app.use(bookRouter,signupRouter, loginRouter,logoutRouter)
 
 // Start server
 app.listen(port, () => {

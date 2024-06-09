@@ -1,5 +1,7 @@
 import express, { response } from "express"
 import { Book } from "../models/book"
+import {db} from "../db"
+import { addBookToReadingList, createBook } from "../services/book";
 
 export const bookRouter = express.Router();
 
@@ -19,9 +21,20 @@ bookRouter.get('/book/:id', async (req, res) => {
 		return res.status(400).json({ message: "S" });
 	}
 	const book = await getBookAPI(bookId)
-	
 	return res.status(200).json(book);
 })
+
+bookRouter.post('/book/:id', async (req, res) => {
+	const bookId : string | any = req.params.id;
+	if (!bookId) {
+		return res.status(400).json({ message: "S" });
+	}
+	const book = await getBookAPI(bookId)
+	createBook(book)
+	addBookToReadingList(book['id'])
+	return res.status(200).json(book);
+})
+
 
 async function getConvertedSearch(searchQuery: string) {
 	return await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(rspns => rspns.json())
@@ -30,6 +43,7 @@ async function getConvertedSearch(searchQuery: string) {
 async function getBookAPI(bookID: string) {
 	return await fetch('https://www.googleapis.com/books/v1/volumes/'+ bookID).then(rspns => rspns.json())
 }
+
 
 
 /**
