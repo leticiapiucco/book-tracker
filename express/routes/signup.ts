@@ -30,7 +30,7 @@ signupRouter.post("/signup", async (req, res) => {
 	const userId = generateId(15);
 
 	try {
-		db.prepare("INSERT INTO Users (UserID, Username, PasswordHash) VALUES(?, ?, ?)").run(
+		db.prepare("INSERT INTO Users (id, Username, PasswordHash) VALUES(?, ?, ?)").run(
 			userId,
 			username,
 			hashedPassword

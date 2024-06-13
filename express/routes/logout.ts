@@ -1,9 +1,9 @@
 import express from "express";
-import { lucia } from "../auth";
+import { lucia } from "../auth.js";
 
 export const logoutRouter = express.Router();
 
-/* logoutRouter.post("/logout", async (_, res) => {
+logoutRouter.post("/", async (_, res) => {
 	if (!res.locals.session) {
 		return res.status(401).end();
 	}
@@ -11,4 +11,4 @@ export const logoutRouter = express.Router();
 	return res
 		.setHeader("Set-Cookie", lucia.createBlankSessionCookie().serialize())
 		.redirect("/login");
-}); */
+});

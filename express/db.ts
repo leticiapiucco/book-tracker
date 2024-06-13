@@ -3,7 +3,7 @@ import Database from "better-sqlite3";
 export const db = new Database("app.db")
 
 db.exec(`CREATE TABLE IF NOT EXISTS Users (
-    UserID TEXT NOT NULL PRIMARY KEY,
+    id TEXT NOT NULL PRIMARY KEY,
     Username TEXT NOT NULL UNIQUE,
     PasswordHash TEXT NOT NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -14,7 +14,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
     id TEXT NOT NULL PRIMARY KEY,
     expires_at INTEGER NOT NULL,
     user_id TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(UserID)
+    FOREIGN KEY (user_id) REFERENCES Users(id)
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS Books (
