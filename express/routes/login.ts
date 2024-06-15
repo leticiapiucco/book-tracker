@@ -23,14 +23,14 @@ loginRouter.post("/login", async (req, res) => {
 		return res.setHeader("Content-Type", "text/html").status(400).json({message:"Invalid password"})
 	}
 
-	const existingUser = db.prepare("SELECT * FROM Users WHERE Username = ?").get(username) as
+	const existingUser = db.prepare("SELECT * FROM Users WHERE username = ?").get(username) as
 		| DatabaseUser
 		| undefined;
 	if (!existingUser) {
 		return res.setHeader("Content-Type", "text/html").status(400).json({message: "Incorrect username or password"});
 	}
 
-	const validPassword = await new Argon2id().verify(existingUser.PasswordHash, password);
+	const validPassword = await new Argon2id().verify(existingUser.password_hash, password);
 	if (!validPassword) {
 		return res.setHeader("Content-Type", "text/html").status(400).json({message: "Incorrect username or password"});
 	}
@@ -39,5 +39,5 @@ loginRouter.post("/login", async (req, res) => {
 	res
 		.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize())
 		.appendHeader("Location", "/")
-		.redirect("/");
+		.redirect("/home");
 });

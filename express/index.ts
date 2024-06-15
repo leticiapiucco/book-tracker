@@ -17,6 +17,7 @@ app.use(bodyParser.json())
 
 app.use(async (req, res, next) => {
 	const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
+	console.log(sessionId)
 	if (!sessionId) {
 		res.locals.user = null;
 		res.locals.session = null;
@@ -35,7 +36,7 @@ app.use(async (req, res, next) => {
 	return next();
 });
 
-app.use(mainRouter, loginRouter, signupRouter, logoutRouter);
+app.use(mainRouter, loginRouter, signupRouter, logoutRouter, bookRouter);
 
 app.listen(port);
 

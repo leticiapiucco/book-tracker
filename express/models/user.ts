@@ -1,5 +1,5 @@
 export interface DatabaseUser {
 	id: string;
-	Username: string;
-	PasswordHash: string;
+	username: string;
+	password_hash: string;
 }

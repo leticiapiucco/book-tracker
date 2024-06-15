@@ -31,7 +31,7 @@ bookRouter.post('/book/:id', async (req, res) => {
 	}
 	const book = await getBookAPI(bookId)
 	createBook(book)
-	addBookToReadingList(book['id'])
+	addBookToReadingList(res.locals.user.id, book['id'])
 	return res.status(200).json(book);
 })
 

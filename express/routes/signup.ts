@@ -8,12 +8,10 @@ import { generateId } from "lucia";
 export const signupRouter = express.Router();
 
 signupRouter.get("/signup", async (_, res) => {
-	const users = db.prepare('SELECT * FROM Users').get()
-	return res.json(users);
 	if (res.locals.session) {
-		return res.redirect("/books");
+		return res.redirect("/home");
 	}
-	return res.status(200).json();
+	return res.status(200).json({message: "Registration Form is shown"});
 });
 
 signupRouter.post("/signup", async (req, res) => {
@@ -30,7 +28,7 @@ signupRouter.post("/signup", async (req, res) => {
 	const userId = generateId(15);
 
 	try {
-		db.prepare("INSERT INTO Users (id, Username, PasswordHash) VALUES(?, ?, ?)").run(
+		db.prepare("INSERT INTO Users (id, username, password_hash) VALUES(?, ?, ?)").run(
 			userId,
 			username,
 			hashedPassword

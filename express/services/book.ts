@@ -1,5 +1,5 @@
 import {db} from "../db"
-import { getCurrentUser } from "./user";
+import { SqliteError } from "better-sqlite3";
 
 export function createBook(book) {
     if (checkBookExist(book['id'])){
@@ -7,7 +7,7 @@ export function createBook(book) {
         return
     }
 	try {
-        const sql = "INSERT INTO Books (BookID, Title, Author) VALUES (?,?,?)"
+        const sql = "INSERT INTO Books (id, title, author) VALUES (?,?,?)"
         db.prepare(sql).run(
 			book['id'],
 			book['volumeInfo']['title'],
@@ -20,23 +20,24 @@ export function createBook(book) {
 }
 
 function checkBookExist(bookId: string) {
-	const stmt = db.prepare("SELECT * FROM Books WHERE BookID = ?")
+	const stmt = db.prepare("SELECT * FROM Books WHERE id = ?")
     const book = stmt.get(bookId)
     return book ? true : false
 }
 
-export function addBookToReadingList(bookId: string) {
-    const currentUser = getCurrentUser()
-    console.log(currentUser)
-    console.log(bookId)
+export function addBookToReadingList(userId, bookId: string) {
     try {
-        const sql = "INSERT INTO ReadingLists (BookID, UserID) VALUES (?,?)"
+        const sql = "INSERT INTO ReadingLists (book_id, user_id) VALUES (?,?)"
         db.prepare(sql).run(
 			bookId,
-			currentUser
+			userId
 		);
     } catch (e) {
         console.error(e)
-        throw e
+		if (e instanceof SqliteError && e.code === "SQLITE_CONSTRAINT_UNIQUE") {
+			return
+        }else{
+            throw e
+        }
     }
 }

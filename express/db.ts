@@ -4,9 +4,9 @@ export const db = new Database("app.db")
 
 db.exec(`CREATE TABLE IF NOT EXISTS Users (
     id TEXT NOT NULL PRIMARY KEY,
-    Username TEXT NOT NULL UNIQUE,
-    PasswordHash TEXT NOT NULL,
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    username TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`
 );
 
@@ -18,17 +18,17 @@ db.exec(`CREATE TABLE IF NOT EXISTS session (
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS Books (
-    BookID TEXT NOT NULL PRIMARY KEY,
-    Title TEXT NOT NULL,
-    Author TEXT
+    id TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    author TEXT
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS ReadingLists (
-    ReadingListID INTEGER PRIMARY KEY UNIQUE,
-    UserID TEXT NOT NULL,
-    BookID TEXT NOT NULL,
+    id INTEGER PRIMARY KEY UNIQUE,
+    user_id TEXT NOT NULL,
+    book_id TEXT NOT NULL,
     AddedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (BookID) REFERENCES Books(BookID),
-    UNIQUE(UserID, BookID)
+    FOREIGN KEY (user_id) REFERENCES Users(id),
+    FOREIGN KEY (book_id) REFERENCES Books(id),
+    UNIQUE(user_id, book_id)
 )`);
