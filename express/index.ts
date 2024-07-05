@@ -17,7 +17,6 @@ app.use(bodyParser.json())
 
 app.use(async (req, res, next) => {
 	const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
-	console.log(sessionId)
 	if (!sessionId) {
 		res.locals.user = null;
 		res.locals.session = null;

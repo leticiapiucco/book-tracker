@@ -35,6 +35,28 @@ bookRouter.post('/book/:id', async (req, res) => {
 	return res.status(200).json(book);
 })
 
+bookRouter.post('/update-status/:id', (req, res) => {
+    const status = req.body.status
+	const bookId : string | any = req.params.id
+	const userId : string = res.locals.user.id
+
+    if (!['to-read', 'reading', 'completed', 'did-not-finish'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status value' });
+    }
+
+    const query = `
+        UPDATE readingLists
+        SET status = ?
+        WHERE user_id = ? AND book_id = ?
+    `;
+	try{
+		db.prepare(query).run([status, userId, bookId])
+	}catch(e){
+		throw e
+	}
+	return res.status(400).json({ messsage: 'Status updated' });
+
+})
 
 async function getConvertedSearch(searchQuery: string) {
 	return await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(rspns => rspns.json())

@@ -27,7 +27,8 @@ db.exec(`CREATE TABLE IF NOT EXISTS ReadingLists (
     id INTEGER PRIMARY KEY UNIQUE,
     user_id TEXT NOT NULL,
     book_id TEXT NOT NULL,
-    AddedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status TEXT NOT NULL DEFAULT 'to-read' CHECK (status IN ('to-read', 'reading', 'completed', 'did-not-finish')),
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (book_id) REFERENCES Books(id),
     UNIQUE(user_id, book_id)
