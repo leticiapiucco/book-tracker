@@ -24,7 +24,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS Books (
 )`);
 
 db.exec(`CREATE TABLE IF NOT EXISTS ReadingLists (
-    id INTEGER PRIMARY KEY UNIQUE,
+    id TEXT NOT NULL PRIMARY KEY,
     user_id TEXT NOT NULL,
     book_id TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -32,4 +32,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS ReadingLists (
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (book_id) REFERENCES Books(id),
     UNIQUE(user_id, book_id)
+)`);
+
+db.exec(`CREATE TABLE IF NOT EXISTS BookUserCount (
+    book_id TEXT NOT NULL,
+    user_count INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (book_id) REFERENCES Books(id),
+    PRIMARY KEY (book_id)
 )`);

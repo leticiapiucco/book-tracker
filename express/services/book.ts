@@ -29,7 +29,7 @@ export function addBookToReadingList(userId, bookId: string) {
     try {
         const transaction = db.transaction(() => {
             // Insert into ReadingLists table
-            const insertReadingList = db.prepare(`INSERT OR IGNORE INTO ReadingLists (user_id, book_id) VALUES (?, ?)`);
+            const insertReadingList = db.prepare(`INSERT INTO ReadingLists (user_id, book_id) VALUES (?, ?)`);
             insertReadingList.run(userId, bookId);
 
             // Update user count in BookUserCount table
@@ -47,4 +47,24 @@ export function addBookToReadingList(userId, bookId: string) {
         console.error(e)
         throw e
     }
+}
+
+export function updateBookStatus(userId, bookId, status) {
+    const query = 'UPDATE ReadingLists SET status = ? WHERE user_id = ? AND book_id = ?'
+	try{
+		db.prepare(query).run([status, userId, bookId])
+	}catch(e){
+		throw e
+	}
+}
+
+export function getBookUserCount(bookId) {
+	const stmt = db.prepare("SELECT user_count FROM BookUserCount WHERE book_id = ?")
+    return stmt.get(bookId)
+}
+
+export function isBookInReadingList(userId, bookId){
+	const result = db.prepare("SELECT * FROM ReadingLists WHERE book_id = ? AND user_id = ?").get(bookId, userId)
+    console.log(result)
+    return result ? true : false
 }

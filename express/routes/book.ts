@@ -1,7 +1,6 @@
 import express, { response } from "express"
-import { Book } from "../models/book"
 import {db} from "../db"
-import { addBookToReadingList, createBook } from "../services/book";
+import { addBookToReadingList, createBook, getBookUserCount, isBookInReadingList, updateBookStatus } from "../services/book";
 
 export const bookRouter = express.Router();
 
@@ -20,42 +19,29 @@ bookRouter.get('/book/:id', async (req, res) => {
 	if (!bookId) {
 		return res.status(400).json({ message: "S" });
 	}
-	const book = await getBookAPI(bookId)
-	return res.status(200).json(book);
+	const bookRequest = await getBookAPI(bookId)
+	createBook(bookRequest)
+	const book = db.prepare("SELECT * FROM Books WHERE id = ?").get(bookId)
+	const count = getBookUserCount(bookId)
+	return res.status(200).json(count);
 })
 
 bookRouter.post('/book/:id', async (req, res) => {
-	const bookId : string | any = req.params.id;
-	if (!bookId) {
-		return res.status(400).json({ message: "S" });
-	}
-	const book = await getBookAPI(bookId)
-	createBook(book)
-	addBookToReadingList(res.locals.user.id, book['id'])
-	return res.status(200).json(book);
-})
-
-bookRouter.post('/update-status/:id', (req, res) => {
     const status = req.body.status
 	const bookId : string | any = req.params.id
 	const userId : string = res.locals.user.id
 
+	const book = await getBookAPI(bookId)
+	createBook(book)
+
     if (!['to-read', 'reading', 'completed', 'did-not-finish'].includes(status)) {
         return res.status(400).json({ error: 'Invalid status value' });
     }
-
-    const query = `
-        UPDATE readingLists
-        SET status = ?
-        WHERE user_id = ? AND book_id = ?
-    `;
-	try{
-		db.prepare(query).run([status, userId, bookId])
-	}catch(e){
-		throw e
+	if (!isBookInReadingList(userId, bookId)){
+		addBookToReadingList(userId, bookId)
 	}
+	updateBookStatus(userId, bookId, status)
 	return res.status(400).json({ messsage: 'Status updated' });
-
 })
 
 async function getConvertedSearch(searchQuery: string) {
@@ -65,53 +51,3 @@ async function getConvertedSearch(searchQuery: string) {
 async function getBookAPI(bookID: string) {
 	return await fetch('https://www.googleapis.com/books/v1/volumes/'+ bookID).then(rspns => rspns.json())
 }
-
-
-
-/**
-
-// CRUD routes for User model
-bookRouter.get('/book', async (req, res) => {
-  const users = await Book.findAll();
-  res.json(users);
-});
-  
-bookRouter.get('/book/:id', async (req, res) => {
-	const user = await Book.findByPk(req.params.id);
-	res.json(user);
-  });
-  
-bookRouter.post('/book', async (req, res) => {
-  try{
-	Book.create(req.body)
-	return res.json({message: "Record created successfully!"})
-  } catch (e) {
-	console.log(e)
-	return res.json({
-	  message: "Unable to create a record!"})
-  }
-})
-
-  
-bookRouter.put('/book/:id', async (req, res) => {
-  const book = await Book.findByPk(req.params.id);
-	if (book) {
-	  await book.update(req.body);
-	  res.json(book);
-	} else {
-	  res.status(404).json({ message: 'Book not found' });
-	}
-  });
-  
-bookRouter.delete('/users/:id', async (req, res) => {
-	const book = await Book.findByPk(req.params.id);
-	if (book) {
-	  await book.destroy();
-	  res.json({ message: 'Book deleted' });
-	} else {
-	  res.status(404).json({ message: 'Book not found' });
-	}
-  });
-
-* 
- */
