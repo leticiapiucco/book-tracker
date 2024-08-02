@@ -1,6 +1,6 @@
 import express, { response } from "express"
 import {db} from "../db"
-import { addBookToReadingList, createBook, getBookUserCount, isBookInReadingList, updateBookStatus } from "../services/book";
+import { addBookToReadingList, createBook, getBookUserCount, isBookInReadingList, removeBookFromReadingList, updateBookStatus } from "../services/book";
 
 export const bookRouter = express.Router();
 
@@ -41,8 +41,18 @@ bookRouter.post('/book/:id', async (req, res) => {
 		addBookToReadingList(userId, bookId)
 	}
 	updateBookStatus(userId, bookId, status)
-	return res.status(400).json({ messsage: 'Status updated' });
+	return res.status(200).json({ messsage: 'Status updated' });
 })
+
+
+bookRouter.post('/remove/:id', async (req, res) =>{
+	const bookId : string | any = req.params.id
+	const userId : string = res.locals.user.id
+	removeBookFromReadingList(userId, bookId)
+	return res.status(200).json({ messsage: 'Status updated' });
+	}
+)
+
 
 async function getConvertedSearch(searchQuery: string) {
 	return await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(rspns => rspns.json())

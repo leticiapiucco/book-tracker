@@ -68,3 +68,26 @@ export function isBookInReadingList(userId, bookId){
     console.log(result)
     return result ? true : false
 }
+
+export function removeBookFromReadingList(userId, bookId: string) {
+    try {
+        const transaction = db.transaction(() => {
+            // Remove from ReadingLists table
+            db.prepare("DELETE FROM ReadingLists WHERE book_id = ? AND user_id = ?").run(bookId, userId)
+            
+            // Update user count in BookUserCount table
+            const updateUserCount = db.prepare(`
+                UPDATE BookUserCount
+                SET user_count = user_count - 1
+                WHERE book_id = ? 
+            `);
+            updateUserCount.run(bookId);
+        });
+
+        // Execute the transaction
+        transaction();
+    } catch (e) {
+        console.error(e)
+        throw e
+    }
+}
