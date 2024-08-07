@@ -388,3 +388,7 @@ xcuserdata/
 # Ignore all local history of files
 .history
 .ionide
+
+
+# Ignore cache created with the Angular CLI.
+.angular/
