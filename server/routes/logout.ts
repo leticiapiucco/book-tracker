@@ -1,5 +1,5 @@
 import express from "express";
-import { lucia } from "../auth.js";
+import { lucia } from "../middleware/authMiddleware.js";
 
 export const logoutRouter = express.Router();
 

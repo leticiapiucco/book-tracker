@@ -1,7 +1,7 @@
 import express from "express";
 import { db } from "../db.js";
 import { Argon2id } from "oslo/password";
-import { lucia } from "../auth.js";
+import { lucia } from "../middleware/authMiddleware.js";
 import { DatabaseUser } from "../models/user.js";
 
 export const loginRouter = express.Router();

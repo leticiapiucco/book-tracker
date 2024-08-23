@@ -1,7 +1,7 @@
 import express from "express";
 import { db } from "../db.js";
 import { Argon2id } from "oslo/password";
-import { lucia } from "../auth.js";
+import { lucia } from "../middleware/authMiddleware.js";
 import { SqliteError } from "better-sqlite3";
 import { generateId } from "lucia";
 
