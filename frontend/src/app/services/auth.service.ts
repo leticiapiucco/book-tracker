@@ -1,29 +1,42 @@
-// auth.service.ts
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthService {
-  private apiUrl : string = 'https:/localhost:3000/'; // Use your server's URL
 
-  constructor(private http: HttpClient) { }
+  private apiUrl = 'http://localhost:3000'; // Replace with your API URL
 
-  getItems(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/login`)
-      .pipe(
-        catchError(this.handleError)
-      );
+  constructor(private http: HttpClient) {}
+
+  login(email: string, password: string): Observable<any> {
+    const loginData = { email, password };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(`${this.apiUrl}/login`, loginData, {headers}).pipe(
+      tap((response: any) => {
+        // Handle successful login response
+        this.setSession(response);
+      })
+    );
   }
 
-    // Handle any errors from the API
-  private handleError(error: any): Observable<never> {
-    console.error('An error occurred', error); // for demo purposes only
-    throw error;
+  private setSession(authResult: any): void {
+    // Store authentication data (e.g., tokens)
+    localStorage.setItem('access_token', authResult.token);
+    // You can store other data as needed
   }
 
+  logout(): void {
+    // Remove session data
+    localStorage.removeItem('access_token');
+  }
 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('access_token');
+  }
 }

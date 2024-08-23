@@ -14,8 +14,8 @@ loginRouter.get("/login", async (_, res) => {
 });
 
 loginRouter.post("/login", async (req, res) => {
-	const username: string | null = req.body.username ?? null;
-	if (!username || username.length < 3 || username.length > 31 || !/^[a-z0-9_-]+$/.test(username)) {
+	const email: string | null = req.body.email ?? null;
+	if (!email || email.length < 3 || email.length > 31 ) {
 		return res.setHeader("Content-Type", "text/html").status(400).json({message: "Invalid username"});
 	}
 	const password: string | null = req.body.password ?? null;
@@ -23,7 +23,7 @@ loginRouter.post("/login", async (req, res) => {
 		return res.setHeader("Content-Type", "text/html").status(400).json({message:"Invalid password"})
 	}
 
-	const existingUser = db.prepare("SELECT * FROM Users WHERE username = ?").get(username) as
+	const existingUser = db.prepare("SELECT * FROM Users WHERE username = ?").get(email) as
 		| DatabaseUser
 		| undefined;
 	if (!existingUser) {

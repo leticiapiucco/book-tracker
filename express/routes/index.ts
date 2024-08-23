@@ -11,10 +11,10 @@ mainRouter.get("/", async (_, res) => {
 });
 
 mainRouter.get("/home", async (_, res) => {
-	const userId = res.locals.user.id
-	if (!userId) {
+	if (!res.locals.user) {
 		return res.redirect("/login");
 	}
+	const userId = res.locals.user.id
     const query = 'SELECT * FROM ReadingLists WHERE user_id = ?'
 	const results = db.prepare(query).all(userId)
 	return res.setHeader("Content-Type", "text/html").status(200).json({results})

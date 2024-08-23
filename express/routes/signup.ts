@@ -15,8 +15,8 @@ signupRouter.get("/signup", async (_, res) => {
 });
 
 signupRouter.post("/signup", async (req, res) => {
-	const username: string | null = req.body.username ?? null;
-	if (!username || username.length < 3 || username.length > 31 || !/^[a-z0-9_-]+$/.test(username)) {
+	const email: string | null = req.body.email ?? null;
+	if (!email || email.length < 3 || email.length > 31) {
 		return res.json({ message: "Invalid username!" })
 	}
 	const password: string | null = req.body.password ?? null;
@@ -30,7 +30,7 @@ signupRouter.post("/signup", async (req, res) => {
 	try {
 		db.prepare("INSERT INTO Users (id, username, password_hash) VALUES(?, ?, ?)").run(
 			userId,
-			username,
+			email,
 			hashedPassword
 		);
 

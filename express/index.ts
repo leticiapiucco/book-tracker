@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { db } from "./db"
+import cors from 'cors'
 import { bookRouter } from './routes/book'
 import { signupRouter } from './routes/signup'
 import { loginRouter } from './routes/login'
@@ -10,6 +10,23 @@ import { mainRouter } from './routes'
 
 export const app = express();
 const port = 3000;
+
+
+const whitelist = ['http://localhost:4200']; 
+const corsOptions = {
+	origin: function (origin, callback) {
+	  if (whitelist.indexOf(origin) !== -1 || !origin) {
+		callback(null, true);
+	  } else {
+		callback(new Error('Not allowed by CORS'));
+	  }
+	},
+	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	//allowedHeaders: ['Content-Type', 'Authorization'], // Add any custom headers you need
+	//credentials: true, // Enable if you need to send cookies or HTTP authentication headers
+};
+  
+app.use(cors(corsOptions));
 
 // Middleware for parsing request body
 app.use(bodyParser.urlencoded({ extended: false }));
