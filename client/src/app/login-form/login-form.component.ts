@@ -3,6 +3,8 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { routes } from '../app.routes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -27,7 +29,8 @@ export class LoginFormComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService // Injecting AuthService
+    private authService: AuthService,
+    private router: Router,
   ) { }
 
   // Getters for easy access to form controls in the template
@@ -44,7 +47,8 @@ export class LoginFormComponent {
       const { email, password } = this.loginForm.value;
       this.authService.login(email!, password!).subscribe(
         response => {
-          console.log('Login successful:', response);
+          console.log('Login successful:', response);   
+          this.router.navigate(['home'])
         },
         error => {
           console.error('Login failed:', error);
