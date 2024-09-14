@@ -7,9 +7,6 @@ import { DatabaseUser } from "../models/user.js";
 export const loginRouter = express.Router();
 
 loginRouter.get("/login", async (_, res) => {
-	if (res.locals.session) {
-		return res.redirect("/");
-	}
 	return res.setHeader("Content-Type", "text/html").status(200).json({message:"login form"});
 });
 
@@ -36,8 +33,6 @@ loginRouter.post("/login", async (req, res) => {
 	}
 
 	const session = await lucia.createSession(existingUser.id, {});
-	res
-		.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize())
-		.appendHeader("Location", "/")
-		.redirect("/home");
-});
+	
+	return res.setHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize()).redirect("/");
+	});

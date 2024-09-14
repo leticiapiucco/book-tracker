@@ -17,9 +17,10 @@ export class AuthService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post(`${this.apiUrl}/login`, loginData, {headers}).pipe(
+    return this.http.post(`${this.apiUrl}/login`, loginData, {headers: headers, withCredentials: true}).pipe(
       tap((response: any) => {
         // Handle successful login response
+        console.log(response)
         this.setSession(response);
       })
     );

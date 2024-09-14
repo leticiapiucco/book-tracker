@@ -16,16 +16,28 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./login-form.component.css'],
   providers: [AuthService],
 })
+
 export class LoginFormComponent {
   loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required]],
     password: ['', Validators.required],
   });
+
+  loginError : boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService // Injecting AuthService
-  ) {}
+  ) { }
+
+  // Getters for easy access to form controls in the template
+  get email() {
+    return this.loginForm.get('email')!;
+  }
+
+  get password() {
+    return this.loginForm.get('password')!;
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {
@@ -36,8 +48,13 @@ export class LoginFormComponent {
         },
         error => {
           console.error('Login failed:', error);
+          this.loginError = true
         }
       );
     }
+  }
+  
+  onInputChange() {
+    this.loginError = false
   }
 }

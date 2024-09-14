@@ -1,8 +1,15 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <label for="email">Username</label>
-    <input id="email" type="email" formControlName="email">
-    <label for="password">Password</label>
-    <input id="password" type="password" formControlName="password">
 
-    <button type="submit">Login</button>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <label for="email">Email</label>
+    <input formControlName="email" type="email" id="email" autocomplete="email" (input)="onInputChange()">
+
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" (input)="onInputChange()">
+
+    <div *ngIf="loginError" class="error">
+        <small>Wrong Credentials</small>
+      </div>
+
+    <button [disabled]="loginForm.invalid" type="submit">Login</button>
 </form>
