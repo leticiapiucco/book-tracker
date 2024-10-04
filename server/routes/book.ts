@@ -53,11 +53,27 @@ bookRouter.post('/remove/:id', async (req, res) =>{
 	}
 )
 
-
 async function getConvertedSearch(searchQuery: string) {
-	return await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(rspns => rspns.json())
-}
+	const books : [] = await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(r => r.json()).then(r => r.items)
+	const newbook: [] = books.map((e) => {
+		let id = e['id']; 
+		e = e['volumeInfo'];
+		e['id'] = id
+		delete e['readingModes']
+		delete e['maturityRating']
+		delete e['allowAnonLogging']
+		delete e['contentVersion']
+		delete e['panelizationSummary']
+		delete e['previewLink']
+		delete e['canonicalVolumeLink']
+		delete e['infoLink']
+		return e
+	})
+	return newbook
+	}
+	
+
 
 async function getBookAPI(bookID: string) {
-	return await fetch('https://www.googleapis.com/books/v1/volumes/'+ bookID).then(rspns => rspns.json())
+	return await fetch('https://www.googleapis.com/books/v1/volumes/'+ bookID).then(rspns => rspns)
 }
