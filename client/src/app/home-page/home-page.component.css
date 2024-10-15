@@ -1,0 +1,25 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    align-items : center;
+}
+
+.book{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    border-radius:1rem;
+    border: solid lightgray;
+    margin: 1em;
+    padding: 1em;
+}
+
+.book img{
+    grid-column: 1;
+    width: 9em;
+    margin: 1em;
+}
+
+.book p{
+    grid-column: 2;
+    margin: 1em
+}

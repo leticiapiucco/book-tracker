@@ -1,9 +1,10 @@
-<div *ngFor="let book of books$ | async">
+<div class="page" *ngFor="let book of books$ | async">
     <div class="book">
         <img src={{book.imageLinks.smallThumbnail}}>
-        <h2>{{book.title}}</h2>
-        <p>{{book.authors}}</p>
-
-        
+        <div class="content">
+            <p>{{book.title}}</p>
+            <p>{{book.authors}}</p>
+            <p>{{book.publishedDate}}</p>
+        </div>
     </div>
 </div>
