@@ -20,6 +20,8 @@ bookRouter.get('/book/:id', async (req, res) => {
 		return res.status(400).json({ message: "S" });
 	}
 	const bookRequest = await getBookAPI(bookId)
+	console.log(bookRequest)
+	return
 	createBook(bookRequest)
 	const book = db.prepare("SELECT * FROM Books WHERE id = ?").get(bookId)
 	const count = getBookUserCount(bookId)
@@ -55,7 +57,7 @@ bookRouter.post('/remove/:id', async (req, res) =>{
 
 async function getConvertedSearch(searchQuery: string) {
 	const books : [] = await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(r => r.json()).then(r => r.items)
-	const newbook: [] = books.map((e) => {
+	const newbook: any[] = books.map((e) => {
 		let id = e['id']; 
 		e = e['volumeInfo'];
 		e['id'] = id
@@ -72,8 +74,18 @@ async function getConvertedSearch(searchQuery: string) {
 	return newbook
 	}
 	
-
-
 async function getBookAPI(bookID: string) {
-	return await fetch('https://www.googleapis.com/books/v1/volumes/'+ bookID).then(rspns => rspns)
+	const book = await fetch('https://www.googleapis.com/books/v1/volumes/'+ bookID).then(r => r.json())
+	let id = book['id']; 
+	const newbook = book['volumeInfo'];
+	newbook['id'] = id
+	delete newbook['readingModes']
+	delete newbook['maturityRating']
+	delete newbook['allowAnonLogging']
+	delete newbook['contentVersion']
+	delete newbook['panelizationSummary']
+	delete newbook['previewLink']
+	delete newbook['canonicalVolumeLink']
+	delete newbook['infoLink']
+	return newbook
 }
