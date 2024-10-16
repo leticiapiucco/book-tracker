@@ -2,7 +2,7 @@
     <div class="book">
         <img src={{book.imageLinks.smallThumbnail}}>
         <div class="content">
-            <p>{{book.title}}</p>
+            <a routerLink="/books/{{book.id}}"> {{book.title}}</a>
             <p>{{book.authors}}</p>
             <p>{{book.publishedDate}}</p>
         </div>
