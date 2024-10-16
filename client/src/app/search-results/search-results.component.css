@@ -1,0 +1,20 @@
+.results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.book{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.book img{
+    grid-column: 1;
+    min-width: 8em;
+  }
+  
+.book .info{
+    grid-column: 2;
+  }
