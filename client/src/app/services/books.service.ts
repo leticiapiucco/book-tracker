@@ -27,6 +27,10 @@ export class BooksService {
   }
 
   search(): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/search?q=Dune`)
+    return this.http.get<Book[]>(`${this.apiUrl}/search?q=The+Secret+History`)
+  }
+
+  getBook(bookId:string){
+    return this.http.get(`${this.apiUrl}/book/` + bookId )
   }
 }

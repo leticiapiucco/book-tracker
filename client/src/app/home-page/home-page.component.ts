@@ -3,6 +3,7 @@ import { BooksService } from '../services/books.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AsyncPipe, JsonPipe, NgFor } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 export interface Book{
   title: string,
@@ -23,7 +24,8 @@ export interface Book{
   standalone: true,
   imports: [NgFor,
     AsyncPipe,
-    JsonPipe
+    JsonPipe,
+    RouterLink,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'

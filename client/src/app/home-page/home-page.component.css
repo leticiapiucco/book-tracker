@@ -19,7 +19,8 @@
     margin: 1em;
 }
 
-.book p{
+.book .content{
     grid-column: 2;
-    margin: 1em
+    margin: 1em;
+    padding-inline: 1em
 }
