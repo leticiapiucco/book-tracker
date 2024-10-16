@@ -1,0 +1,13 @@
+<div class="results">
+    <div *ngFor="let book of books$ | async">
+        <div class="book">
+            <img src={{book.imageLinks.smallThumbnail}}>
+            <div class="info">
+                <p>{{book.title}}</p>
+                <p>{{book.authors}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

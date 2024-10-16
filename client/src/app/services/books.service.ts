@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
-import { Book } from '../home-page/home-page.component';
+import { Observable, tap } from 'rxjs';
+import { Book } from '../search-results/search-results.component';
 
 @Injectable({
   providedIn: 'root'

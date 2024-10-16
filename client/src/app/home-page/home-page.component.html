@@ -1,10 +1,1 @@
-<div class="page" *ngFor="let book of books$ | async">
-    <div class="book">
-        <img src={{book.imageLinks.smallThumbnail}}>
-        <div class="content">
-            <a routerLink="/books/{{book.id}}"> {{book.title}}</a>
-            <p>{{book.authors}}</p>
-            <p>{{book.publishedDate}}</p>
-        </div>
-    </div>
-</div>
+<app-search-results/>
