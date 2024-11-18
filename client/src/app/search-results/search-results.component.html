@@ -1,9 +1,9 @@
-<div class="results">
+<div class="page">
     <div *ngFor="let book of books$ | async">
         <div class="book">
             <img src={{book.imageLinks.smallThumbnail}}>
-            <div class="info">
-                <p>{{book.title}}</p>
+            <div class="content">
+                <a routerLink="/books/{{book.id}}">{{book.title}}</a>
                 <p>{{book.authors}}</p>
             </div>
         </div>

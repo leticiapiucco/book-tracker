@@ -2,6 +2,7 @@ import { AsyncPipe, JsonPipe, NgFor } from '@angular/common';
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { BooksService } from '../services/books.service';
 import { map, Observable } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 export interface Book{
   title: string,
@@ -21,7 +22,8 @@ export interface Book{
   standalone: true,
   imports: [NgFor,
     AsyncPipe,
-    JsonPipe
+    JsonPipe,
+    RouterLink
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css'

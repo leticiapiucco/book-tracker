@@ -24,8 +24,7 @@ export interface Book{
   imports: [NgFor,
     AsyncPipe,
     JsonPipe,
-    RouterLink,
-  ],
+    RouterLink, SearchResultsComponent],
 
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'

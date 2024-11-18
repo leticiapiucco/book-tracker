@@ -16,12 +16,13 @@ bookRouter.get('/search', async (req, res) => {
 
 bookRouter.get('/book/:id', async (req, res) => {
 	const bookId : string | any = req.params.id;
+	console.log(bookId)
 	if (!bookId) {
 		return res.status(400).json({ message: "S" });
 	}
 	const bookRequest = await getBookAPI(bookId)
 	console.log(bookRequest)
-	return
+	return res.status(200).json(bookRequest);
 	createBook(bookRequest)
 	const book = db.prepare("SELECT * FROM Books WHERE id = ?").get(bookId)
 	const count = getBookUserCount(bookId)
