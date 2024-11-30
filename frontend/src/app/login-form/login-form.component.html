@@ -1,0 +1,18 @@
+
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+  <label for="email">Email</label>
+  <input class="mb-4" [class]="loginError ? 'invalid-input' : ''"
+    formControlName="email" type="email" id="email" autocomplete="email"
+    (input)="onInputChange()">
+
+  <label for="password">Password</label>
+  <input class="mb-2" [class]="loginError ? 'invalid-input' : ''" id="password"
+    type="password" formControlName="password" (input)="onInputChange()">
+
+  <div *ngIf="loginError" class="error">
+    <p class="login-error">Wrong Credentials</p>
+  </div>
+
+  <button [disabled]="loginForm.invalid" type="submit">Login</button>
+</form>
