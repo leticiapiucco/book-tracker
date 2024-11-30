@@ -1,6 +1,0 @@
-@if (book$) {
-    <p>{{ (book$ | async)?.title}}</p>
-    <p>{{ (book$ | async)?.authors}}</p>
-    <p>{{ (book$ | async)?.categories}}</p>
-    <img src="{{(book$ | async)?.imageLinks?.thumbnail}}">
-}
