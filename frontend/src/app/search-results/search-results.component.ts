@@ -1,8 +1,9 @@
 import { AsyncPipe, JsonPipe, NgFor } from '@angular/common';
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { BooksService } from '../services/books.service';
-import { map, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, distinctUntilKeyChanged, map, Observable, switchMap, tap } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 export interface Book{
   title: string,
@@ -23,18 +24,14 @@ export interface Book{
   imports: [NgFor,
     AsyncPipe,
     JsonPipe,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
   ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css'
 })
-export class SearchResultsComponent implements OnInit{
-  books$: Observable<Book[]>
-  constructor(private booksService : BooksService){
-    this.books$=this.booksService.search().pipe(map(res => res))
+export class SearchResultsComponent {
 
-  }
-  ngOnInit(){
-    this.books$=this.booksService.search().pipe(map(res => res))
+  constructor(private booksService : BooksService){
   }
 }

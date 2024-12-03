@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Book } from '../search-results/search-results.component';
+import { NONE_TYPE } from '@angular/compiler';
 
 export interface BookDetailsModel {
   title: string,
@@ -50,11 +51,14 @@ export class BooksService {
 
   }
 
-  search(): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.apiUrl}/search?q=The+Secret+History`)
+  search(searchTerm?: string, maxResults:string = '') {
+    if(searchTerm != ''){
+      return this.http.get<Book[]>(`${this.apiUrl}/search?q=`+searchTerm+'&maxResults='+maxResults)
+    }
+    return null
   }
 
-  getBook(bookId:string): Observable<BookDetailsModel> {
-    return this.http.get<BookDetailsModel>(`${this.apiUrl}/book/`+bookId)
+  getBook(bookId: string): Observable<BookDetailsModel> {
+    return this.http.get<BookDetailsModel>(`${this.apiUrl}/book/`+ bookId)
   }
 }

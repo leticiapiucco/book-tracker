@@ -6,10 +6,11 @@ export const bookRouter = express.Router();
 
 bookRouter.get('/search', async (req, res) => {
 	const searchQuery : string | any = req.query.q;
+	const maxResultsQuery : string | any = req.query.maxResults
 	if (!searchQuery) {
-		return res.status(400).json({ message: "S" });
+		return res.status(400).json({ message: "No query" });
 	}
-	const books = await getConvertedSearch(searchQuery)
+	const books = await getConvertedSearch(searchQuery, maxResultsQuery)
 	return res.status(200).json(books);
 })
 
@@ -56,8 +57,8 @@ bookRouter.post('/remove/:id', async (req, res) =>{
 	}
 )
 
-async function getConvertedSearch(searchQuery: string) {
-	const books : [] = await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults=10&orderBy=relevance').then(r => r.json()).then(r => r.items)
+async function getConvertedSearch(searchQuery: string, maxResults:string = '10') {
+	const books : [] = await fetch('https://www.googleapis.com/books/v1/volumes?q='+ searchQuery +'&projection=lite&maxResults='+ maxResults +'&orderBy=relevance').then(r => r.json()).then(r => r.items)
 	const newbook: any[] = books.map((e) => {
 		let id = e['id']; 
 		e = e['volumeInfo'];

@@ -7,8 +7,6 @@
 .book{
   display: grid;
   grid-template-columns: 1fr 3fr;
-  border-radius:1rem;
-  border: solid lightgray;
   margin: 1em;
   padding: 1em;
 }
